@@ -87,7 +87,7 @@ class Api
         ksort($params);
         $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
         $raw_param = "$method\n$uri\n".http_build_query($params);
-        $sig = hash_hmac('sha256', $raw_param, CLIENT_SECRET, true);
+        $sig = hash_hmac('sha256', $raw_param, self::CLIENT_SECRET, true);
         $sigb64 = base64_encode($sig);
         return $signature === urlencode($sigb64);
     }
