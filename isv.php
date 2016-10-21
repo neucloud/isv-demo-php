@@ -1,4 +1,5 @@
 <?php
+
 include('./Api.php');
 $api = new Api();
 
@@ -37,6 +38,18 @@ switch ($params['type']) {
         break;
     case 'CHANGE':
         echo $api->change();
+        break;
+    case 'DEPT_CREATE':
+        echo $api->deptCreate();
+        break;
+    case 'DEPT_REMOVE':
+        echo $api->deptRemove();
+        break;
+    case 'USER_ASSIGN':
+        echo $api->userAssign();
+        break;
+    case 'USER_UNASSIGN':
+        echo $api->userUnassign();
         break;
 
     default:

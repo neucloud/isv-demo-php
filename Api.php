@@ -78,6 +78,62 @@ class Api
     }
 
     /**
+    *创建部门示例
+    **/
+    public function deptCreate()
+    {
+        //处理具体业务逻辑
+        //..
+
+        //返回结果
+        $result = array();
+        $result['status'] = 'success';
+        return $this->generateCorrectResponse($result);
+    }
+
+    /**
+    *删除部门示例
+    **/
+    public function deptRemove()
+    {
+        //处理具体业务逻辑
+        //..
+
+        //返回结果
+        $result = array();
+        $result['status'] = 'success';
+        return $this->generateCorrectResponse($result);
+    }
+
+    /**
+    *创建用户示例
+    **/
+    public function userAssign()
+    {
+        //处理具体业务逻辑
+        //..
+
+        //返回结果
+        $result = array();
+        $result['status'] = 'success';
+        return $this->generateCorrectResponse($result);
+    }
+
+    /**
+    *删除用户示例
+    **/
+    public function userUnsign()
+    {
+        //处理具体业务逻辑
+        //..
+
+        //返回结果
+        $result = array();
+        $result['status'] = 'success';
+        return $this->generateCorrectResponse($result);
+    }
+
+    /**
     *校验签名
     **/
     public function validate($params, $method)
