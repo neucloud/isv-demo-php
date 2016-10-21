@@ -1,22 +1,13 @@
 <?php 
-
 $client_id = 'CLIENT_ID';
 $client_secret = 'CLIENT_SECRET';
-$request_uri = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-$redirect_uri = explode('?', $request_uri)[0];
 session_start();
-
-if(isset($_GET['source'])) {
-	$source = $_GET['source'];
-	$_SESSION['source'] = $source;
-	$uri = $source . '/oauth/authorize?response_type=code&client_id=' . $client_id . '&redirect_uri=' . $redirect_uri;
-	header("Location:$uri");
-}
 
 if(isset($_GET['code'])) {
 	$code = $_GET['code'];
-	require('./httpful.phar');
+	require('./dependences/httpful.phar');
 	$source = $_SESSION['source'];
+	$redirect_uri = $_SESSION['redirect_uri'];
 	$uri = $source . '/oauth/access_token';
 	$params = json_encode(array(
 		'grant_type'=>'authorization_code',
@@ -26,10 +17,10 @@ if(isset($_GET['code'])) {
 		'code'=>$code
 		));
 	$result = \Httpful\Request::post($uri)->sendsJson()->body($params)->send();
-	$result = (array)json_decode($result);
+	$result = json_decode($result, true);
 
 	if(!isset($result['access_token'])) {
-		echo "错误";
+		echo "token错误";
 		exit();
 	}
 	$access_token = $result['access_token'];
@@ -41,4 +32,6 @@ if(isset($_GET['code'])) {
 	$userInfo = \Httpful\Request::post($uri_user_show)->sendsJson()->body($params_user_show)->send();
 	echo '<h1>' . $userInfo->body->account . ',你好 !</h1>';;
 
+}else {
+	echo "code错误";
 }
