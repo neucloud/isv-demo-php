@@ -1,8 +1,11 @@
 <?php
 class Api
 {
-    const CLIENT_ID = 'CLIENT_ID';
-    const CLIENT_SECRET = 'CLIENT_SECRET';
+    function __construct()
+    {
+        $this->client_id = getenv('CLIENT_ID') ?: 'CLIENT_ID';
+        $this->client_secret = getenv('CLIENT_SECRET') ?: 'CLIENT_SECRET';
+    }
 
     /**
     *开通示例
@@ -17,7 +20,7 @@ class Api
         $result = array();
         $result['app_id'] = 'abcde12';
         $result['status'] = 'opened';
-        $result['outputs'] = ['url' => 'http://isv.com/sso.php'];
+        $result['outputs'] = ['url' => $this->getUrl('sso.php')];
         return $this->generateCorrectResponse($result);
     }
 
@@ -142,10 +145,10 @@ class Api
         unset($params['signature']);
         ksort($params);
         $uri = explode('?', $_SERVER['REQUEST_URI'])[0];
-        $raw_param = "$method\n$uri\n".http_build_query($params);
-        $sig = hash_hmac('sha256', $raw_param, self::CLIENT_SECRET, true);
+        $raw_param = "$method\n$uri\n".http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+        $sig = hash_hmac('sha256', $raw_param, $this->client_secret, true);
         $sigb64 = base64_encode($sig);
-        return $signature === urlencode($sigb64);
+        return $signature === rawurlencode($sigb64);
     }
 
     /**
@@ -163,5 +166,13 @@ class Api
     {
         $result['ret'] = 0;
         return json_encode($result);
+    }
+
+    public function getUrl($extra)
+    {
+        $host  = $_SERVER['HTTP_HOST'];
+        $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+        $url   = "http://$host$uri/$extra";
+        return $url;
     }
 }
