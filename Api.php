@@ -8,7 +8,7 @@ class Api
     }
 
     /**
-    *开通示例
+    *开通示例 webhook test
     **/
     public function open()
     {
